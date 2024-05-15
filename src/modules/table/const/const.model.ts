@@ -1,4 +1,4 @@
 export enum ConstatnsTable {  
-    OK_MESSAGE_ADD_EMPLOYEE = 'Get all products in menu'
+    OK_MESSAGE_GET_ALL_PRODUCTS = 'Get all products in menu'
 
 }

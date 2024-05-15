@@ -5,7 +5,7 @@ import { MenuDto } from '../../table/dto/menu.model';
 export class OrderRequestDto {
 
     @IsArray()
-    @ArrayMinSize(2, { message: 'Order should have a one dish'})
+    @ArrayMinSize(1, { message: 'Order should have a one dish'})
     public dishes: MenuDto[];
 
 }

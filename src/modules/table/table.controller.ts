@@ -26,7 +26,7 @@ import { ApiResponseDto } from './dto/apiResponse.model';
             const menuProducts = this.tableService.getMenuProducts();
             const response = new ApiResponseDto(
                             Constatns.SUCCESS_TRUE, 
-                            ConstatnsTable.OK_MESSAGE_ADD_EMPLOYEE, 
+                            ConstatnsTable.OK_MESSAGE_GET_ALL_PRODUCTS, 
                             menuProducts,
                             Constatns.HTTP_OK);
             return response;
