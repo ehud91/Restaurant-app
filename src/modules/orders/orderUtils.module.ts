@@ -4,7 +4,7 @@ export class orderUtils {
 
     public sumPreparationTime(dishes: MenuDto[]) {
         let sumPreparationTime: number = 0;
-        for (let dish of dishes) { sumPreparationTime += dish.preparationTime; }
+        //for (let dish of dishes) { sumPreparationTime += dish.preparationTime; }
         return sumPreparationTime;
     }
 }

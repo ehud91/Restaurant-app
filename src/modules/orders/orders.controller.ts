@@ -22,18 +22,26 @@ export class OrdersController {
     constructor(private ordersService: OrdersService) {}
 
 
-    @Post('/createNewOrder')
+    @Post('/placeNewOrder')
     @HttpCode(Constatns.HTTP_OK)
     @UsePipes(ValidationPipe)
-    createNewOrder(@Body() orderRequest: OrderRequestDto) {
+    placeNewOrder(@Body() orderRequest: OrderRequestDto) {
 
-        const newOrder = this.ordersService.createNewOrder(orderRequest);
-        const response = new ApiResponseDto(
-            Constatns.SUCCESS_TRUE, 
-            ConstatnsOrders.OK_MESSAGE_CREATE_NEW_ORDER, 
-            newOrder,
-            Constatns.HTTP_OK);
-        return response;
+        try {
+            const newOrder = this.ordersService.placeNewOrder(orderRequest);
+            const response = new ApiResponseDto(
+                Constatns.SUCCESS_TRUE, 
+                ConstatnsOrders.OK_MESSAGE_CREATE_NEW_ORDER, 
+                newOrder,
+                Constatns.HTTP_OK);
+            return response;
+        } catch(error) {
+            const response = new ApiResponseDto(
+                Constatns.SUCCESS_FALSE, 
+                ConstatnsOrders.FAILURE_MESSAGE_CREATE_NEW_ORDER, 
+                [],
+                Constatns.HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Get('/getOrders')
@@ -43,7 +51,7 @@ export class OrdersController {
         const ordersResult = this.ordersService.getAllOrders();
 
         const orders = [];
-        ordersResult.forEach(order => { orders.push(order); });
+        //ordersResult.forEach(order => { orders.push(order); });
         const response = new ApiResponseDto(
             Constatns.SUCCESS_TRUE, 
             ConstatnsOrders.OK_MESSAGE_GET_ALL_ORDERS, 
