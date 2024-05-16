@@ -2,11 +2,11 @@ import { BadRequestException, HttpException, HttpStatus, Injectable } from "@nes
 import { OrderRequestDto } from './dto/orderRequest.model';
 import { OrderDto } from "./dto/order.model";
 import { v4 as uuidv4 } from 'uuid';
-import { StatusTypeDto } from './dto/statusTypeDto.model';
 import { orderUtils } from "./orderUtils.module";
 import { DataSource } from "typeorm";
 import { OrderEntity } from "./entities/order.entity";
 import { OrderItemsEntity } from './entities/orderItems.entity'; 
+import { StatusTypeDto } from './entities/order.entity';
 
 
 @Injectable() 
@@ -17,7 +17,8 @@ export class OrdersService {
 
     orders = new Map<String, OrderDto>();
 
-    constructor(private orderUtils: orderUtils, private dataSource: DataSource) {
+    constructor(private orderUtils: orderUtils, 
+                private dataSource: DataSource) {
         this.ordersRepository = dataSource.getRepository(OrderEntity);
         this.ordersItemsRepository = dataSource.getRepository(OrderItemsEntity);
     }
@@ -27,8 +28,11 @@ export class OrdersService {
     
         const newOrder = new OrderEntity();
         newOrder.orderId = uuidv4();
+        newOrder.status = StatusTypeDto.CREATED;
+        
         
         const orderItemsCollection = this.placeOrderItems(newOrder, orderRequest);
+        newOrder.preparationTime = this.orderUtils.sumTotalPreparationTime(orderRequest);
 
         try {
             await this.ordersRepository.save(newOrder);  
@@ -55,13 +59,51 @@ export class OrdersService {
             const newOrderItems = new OrderItemsEntity();
             newOrderItems.itemId = dish.itemId;
             newOrderItems.orderId = newOrder.orderId;
+            orderItemsCollection.push(newOrderItems);
         }
         return orderItemsCollection;
     }
 
-    getAllOrders() {
+    async getAllOrders() {
     
-        //this.orde
+        const ordersCollection = [];
+        const orders: OrderEntity[] = await this.ordersRepository.find();
+
+        for (let order of orders) {
+            const items: OrderItemsEntity[] = await this.ordersItemsRepository.find({
+                where: { "orderId": order.orderId }
+            });
+
+            ordersCollection.push({
+                "order": order,
+                "orderItens": items
+            });
+        }
+        return ordersCollection;
+    }
+
+    async getOrderById(orderId: string) { 
+
+        const order: OrderEntity = await this.ordersRepository.findOne(
+            { where: { "orderId": orderId }});
+        
+        if (order === null) { return [] };
+        
+        const orderItems: OrderItemsEntity[] = await this.getAllItemsByOrder(order);
+
+        return {
+            "order": order,
+            "orderItems": orderItems
+        };
+    }
+
+    private async getAllItemsByOrder(order: OrderEntity): Promise<OrderItemsEntity[]> {
+
+        const items: OrderItemsEntity[] = await this.ordersItemsRepository.find(
+            { where: { "orderId": order.orderId }});
+        return items;
+
+        
     }
 
 
@@ -95,9 +137,11 @@ export class OrdersService {
     }
     */
 
+    /*
     getOrder(orderId: string) {
         if (orderId === '') { return []; }
         const order = this.orders.get(orderId);
         return (typeof(order) === 'object') ? order : [];
     }
+    */
 }

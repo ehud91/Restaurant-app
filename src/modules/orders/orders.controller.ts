@@ -46,31 +46,46 @@ export class OrdersController {
 
     @Get('/getOrders')
     @HttpCode(Constatns.HTTP_OK)
-    getOrders() {
+    async getOrders() {
         
-        const ordersResult = this.ordersService.getAllOrders();
-
-        const orders = [];
-        //ordersResult.forEach(order => { orders.push(order); });
-        const response = new ApiResponseDto(
-            Constatns.SUCCESS_TRUE, 
-            ConstatnsOrders.OK_MESSAGE_GET_ALL_ORDERS, 
-            orders,
-            Constatns.HTTP_OK);
+        try {
+            const ordersResult = await this.ordersService.getAllOrders();
+            const response = new ApiResponseDto(
+                Constatns.SUCCESS_TRUE, 
+                ConstatnsOrders.OK_MESSAGE_GET_ALL_ORDERS, 
+                ordersResult,
+                Constatns.HTTP_OK);
         return response;
+        } catch(error) {
+            const response = new ApiResponseDto(
+                Constatns.SUCCESS_FALSE, 
+                ConstatnsOrders.FAILURE_MESSAGE_GET_ALL_ORDERS, 
+                [],
+                Constatns.HTTP_INTERNAL_SERVER_ERROR);
+            return response;
+        }
     }
 
     @Get('/getOrderById/:id')
     @HttpCode(Constatns.HTTP_OK)
-    getOrderById(@Param('id') orderId: string) {
+    async getOrderById(@Param('id') orderId: string) {
 
-        const orderResult = this.ordersService.getOrder(orderId);
-        const response = new ApiResponseDto(
-            Constatns.SUCCESS_TRUE, 
-            ConstatnsOrders.OK_MESSAGE_GET_ORDER_BY_ID, 
-            orderResult,
-            Constatns.HTTP_OK);
-        return response;
+        try {
+            const orderResult = await this.ordersService.getOrderById(orderId);
+            const response = new ApiResponseDto(
+                Constatns.SUCCESS_TRUE, 
+                ConstatnsOrders.OK_MESSAGE_GET_ORDER_BY_ID, 
+                orderResult,
+                Constatns.HTTP_OK);
+            return response;
+        } catch(error) {
+            const response = new ApiResponseDto(
+                Constatns.SUCCESS_FALSE, 
+                ConstatnsOrders.FAILURE_MESSAGE_GET_ORDER_BY_ID, 
+                [],
+                Constatns.HTTP_INTERNAL_SERVER_ERROR);
+            return response;
+        }
     }
 
 

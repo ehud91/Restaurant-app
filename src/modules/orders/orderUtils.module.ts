@@ -1,10 +1,11 @@
-import { MenuDto } from '../table/dto/menu.model';
+import { OrderRequestDto } from './dto/orderRequest.model';
 
 export class orderUtils { 
 
-    public sumPreparationTime(dishes: MenuDto[]) {
+    public sumTotalPreparationTime(orderRequest: OrderRequestDto) {
         let sumPreparationTime: number = 0;
-        //for (let dish of dishes) { sumPreparationTime += dish.preparationTime; }
+        
+        for (let dish of orderRequest.dishes) { sumPreparationTime += dish.preparationTime; }
         return sumPreparationTime;
     }
 }

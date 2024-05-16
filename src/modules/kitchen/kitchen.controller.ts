@@ -12,16 +12,18 @@ import {
     Query} from '@nestjs/common';
 
 import { KitchenService } from './kitchen.service';
-import { OrderDto } from '../orders/dto/order.model';
+import { Constatns } from '../const/consts.model';
 
 @Controller('kitchen')
 export class KitchenController {
 
     constructor(private kitchenService: KitchenService) {}
 
-    @Post('/prepareOrder')
-    prepareOrder(@Body() order: OrderDto) {
+    @Get('/prepareOrder')
+    @HttpCode(Constatns.HTTP_OK)
+    prepareOrder() {
 
-        this.kitchenService.prepareOrder(order);
+        this.kitchenService.prepareOrder();
+        return {};
     }
 }

@@ -1,5 +1,4 @@
-import { IsNotEmpty, Length, IsInt, Min, Max, IsEnum, IsArray, ArrayMinSize } from 'class-validator';
-import { MenuDto } from '../../table/dto/menu.model';
+import { IsArray, ArrayMinSize } from 'class-validator';
 import { MenuItemDto } from 'src/modules/table/dto/menuItem.model';
 
 

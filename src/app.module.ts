@@ -7,9 +7,13 @@ import { KitchenModule } from './modules/kitchen/kitchen.module';
 import { ChefModule } from './modules/chef/chef.module';
 import { WaiterModule } from './modules/waiter/waiter.module';
 import { TypeOrmModule } from './datasource/typeorm.module';
+import { TaskModule } from './tasks/task.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [TypeOrmModule,
+  imports: [ScheduleModule.forRoot(), 
+            TaskModule,
+            TypeOrmModule,
             TableModule,
             OrdersModule,
             KitchenModule,

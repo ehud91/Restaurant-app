@@ -1,5 +1,4 @@
 import { MenuDto } from '../../table/dto/menu.model';
-import { StatusTypeDto } from './statusTypeDto.model';
 
 
 export class OrderDto {
