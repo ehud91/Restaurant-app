@@ -24,7 +24,11 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# Restaurant SASS application project
+
+
+
+Buit by [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
 
