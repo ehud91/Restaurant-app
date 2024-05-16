@@ -26,7 +26,15 @@
 
 # Restaurant SASS application project
 
+### Project Design diagram
+<p align="left">
+  <img src="https://github.com/ehud91/Restaurant-app/blob/master/assets/Nice-rest-diagram.drawio.png" width="650" alt="Design Diagram" />
+</p>
 
+### Project Design Flow
+<p align="left">
+  <img src="https://github.com/ehud91/Restaurant-app/blob/master/assets/Nice-rest-main-flow.drawio.png" width="650" alt="Design Flow" />
+</p>
 
 Buit by [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
