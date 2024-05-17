@@ -1,5 +1,8 @@
 export enum ConstatnsOrders {  
+    // General Consts
     SUCCESS_FALSE = 'false',
+
+    // Messages
     OK_MESSAGE_CREATE_NEW_ORDER = 'A new oredr created',
     FAILURE_MESSAGE_CREATE_NEW_ORDER = 'Failed to place new order',
     OK_MESSAGE_GET_ALL_ORDERS = 'Get All Orders',

@@ -53,16 +53,16 @@ export class OrdersService {
     }
 
 
-    private placeOrderItems(newOrder: OrderEntity,orderRequest: OrderRequestDto) {
-        const orderItemsCollection = [];
-        for(let dish of orderRequest.dishes) {
-            const newOrderItems = new OrderItemsEntity();
-            newOrderItems.itemId = dish.itemId;
-            newOrderItems.orderId = newOrder.orderId;
-            orderItemsCollection.push(newOrderItems);
+    async updateOrder(order: OrderEntity) {
+
+        try {
+            await this.ordersRepository.update(order.id, order);
+        } catch(error) {
+            throw new HttpException('Could not update the order', HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return orderItemsCollection;
+        return order;
     }
+
 
     async getAllOrders() {
     
@@ -95,6 +95,33 @@ export class OrdersService {
             "order": order,
             "orderItems": orderItems
         };
+    }
+
+    async getTheFirstPlacedOrder() { 
+
+        const order: OrderEntity = await this.ordersRepository.findOne(
+            { where: { "status": StatusTypeDto.CREATED }});
+
+        if (order === null) { return null };
+
+        const orderItems: OrderItemsEntity[] = await this.getAllItemsByOrder(order);
+
+        return {
+            "order": order,
+            "orderItems": orderItems
+        }; 
+    }
+
+
+    private placeOrderItems(newOrder: OrderEntity,orderRequest: OrderRequestDto) {
+        const orderItemsCollection = [];
+        for(let dish of orderRequest.dishes) {
+            const newOrderItems = new OrderItemsEntity();
+            newOrderItems.itemId = dish.itemId;
+            newOrderItems.orderId = newOrder.orderId;
+            orderItemsCollection.push(newOrderItems);
+        }
+        return orderItemsCollection;
     }
 
     private async getAllItemsByOrder(order: OrderEntity): Promise<OrderItemsEntity[]> {
